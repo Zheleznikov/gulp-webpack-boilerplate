@@ -4,23 +4,34 @@
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
+    "gulp-debug": "^4.0.0",
+    "gulp-newer": "^1.4.0",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
     "browser-sync": "^2.26.10",
+    "cross-env": "^7.0.2",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
+    "gulp-cached": "^1.1.1",
+    "gulp-changed": "^4.0.2",
     "gulp-file-include": "^2.2.2",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
+    "gulp-imagemin": "^7.1.0",
     "gulp-load-plugins": "^2.0.3",
+    "gulp-notify": "^3.2.0",
+    "gulp-remember": "^1.0.1",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
-    "multipipe": "^4.0.0"
+    "multipipe": "^4.0.0",
+    "path": "^0.12.7"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development gulp dev",
+    "build": "cross-env NODE_ENV=production gulp build"
   },
   "repository": {
     "type": "git",

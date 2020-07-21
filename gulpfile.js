@@ -1,35 +1,28 @@
 'use strict'
-const { task, series, parallel } = require('gulp');
-// const $ = require('gulp-load-plugins')();
-
+const { task, series, parallel, watch } = require('gulp');
+const $ = require('gulp-load-plugins')();
 const lazyRequireTask = require('./gulp/congif/lazyRequireTask');
 
+lazyRequireTask('scssBuild', '../tasks/scssBuild', { src: 'src/index.scss'});
+lazyRequireTask('htmlBuild', '../tasks/htmlBuild', { src: 'src/**.html' });
+lazyRequireTask('imgBuild', '../tasks/imgBuild', { src: 'src/images/**/*.*'});
+lazyRequireTask('fullClean', '../tasks/clean', { src: 'build'});
+lazyRequireTask('clean', '../tasks/clean', { src: 'build/!(images){,/**}'});
+lazyRequireTask('serve', '../tasks/serve');
 
 
-lazyRequireTask('scssBuild', '../tasks/scssBuild', {
-  src: 'src/index.scss'
-})
 
-lazyRequireTask('htmlBuild', '../tasks/htmlBuild', {
-  src: 'src/**.html'
-})
+task('build', series('fullClean', parallel('imgBuild', 'htmlBuild', 'scssBuild')));
 
-lazyRequireTask('clean', '../tasks/clean', { src: 'build'})
+task('watch', () => {
+  watch('src/**/*.scss', series('scssBuild'))
+    .on('unlink', function(filepath) {
+      $.remember.forget('scssBuild', path.resolve(filepath));
+      // delete $.cached.caches.scssBuild[path.resolve(filepath)]
+    });
+  watch('src/images/**/*.*', series('imgBuild'));
+  watch('src/**/*.html', series('htmlBuild'));
+});
 
 
-// function htmlBuild() {
-//  return src('src/**.html')
-//   .pipe(include())
-//   .pipe(dest('build'))
-// }
-
-// function scssBuild() {
-//   return src('src/index.scss')
-//   .pipe($.sass())
-//   .pipe(dest('build'))
-// }
-
-// exports.htmlBuild = htmlBuild;
-// exports.scssBuild = scssBuild;
-
-task('build', parallel('htmlBuild', 'scssBuild'))
+task('dev', series('clean', parallel('imgBuild', 'htmlBuild', 'scssBuild', 'watch', 'serve')));

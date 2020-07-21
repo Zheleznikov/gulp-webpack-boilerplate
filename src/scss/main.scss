@@ -1,0 +1,13 @@
+.main__title {
+  text-align: center;
+  color: blueviolet;
+}
+
+.main {
+  background-image: url(./images/background.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex: auto;
+  // flex-shrink: 1;
+}

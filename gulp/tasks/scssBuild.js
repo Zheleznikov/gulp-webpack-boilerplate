@@ -1,31 +1,28 @@
 'use strict'
-
 const $ = require('gulp-load-plugins')();
-
-const gulp = require('gulp');
-// const sass = require('gulp-sass');
-// const sourcemaps = require('gulp-sourcemaps');
-// const gulpIf = require('gulp-if');
-// const autoprefixer = require('gulp-autoprefixer');
-// const remember = require('gulp-remember');
-// const notify = require('gulp-notify');
+const { src, dest } = require('gulp');
 const multipipe = require('multipipe');
 
-const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development'
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
-
-module.exports = function(options) {
-  return function(cb) {
-    return multipipe(
-      gulp.src(options.src),
-      // $.if(isDevelopment, $.sourcemaps.init()),
-      $.sass(),
-      $.autoprefixer(),
-      // $.remember('styles'),
-      // $.if(isDevelopment, sourcemaps.write()),
-      gulp.dest('build')
-    )
-    // .on('error', $.notify.onError())
-  };
-
-}
+module.exports = (options) => () =>
+  multipipe(
+    src(options.src),
+     $.cached('scssBuild'),
+    $.if(isDev, $.sourcemaps.init()),
+    $.sass(),
+    $.autoprefixer([
+      'Android 2.3',
+      'Android >= 4',
+      'Chrome >= 20',
+      'Firefox >= 24',
+      'Explorer >= 8',
+      'iOS >= 6',
+      'Opera >= 12',
+      'Safari >= 6',
+    ], { cascade: true, flexbox: true }),
+    $.remember('scssBuild'),
+    $.if(isDev, $.sourcemaps.write()),
+    dest('build')
+  )
+  .on('error', $.notify.onError())
