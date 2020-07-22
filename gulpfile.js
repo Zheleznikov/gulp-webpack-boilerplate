@@ -12,7 +12,7 @@ lazyRequireTask('serve', '../tasks/serve');
 
 
 
-task('build', series('fullClean', parallel('imgBuild', 'htmlBuild', 'scssBuild')));
+task('build', series('fullClean', 'imgBuild', parallel('htmlBuild', 'scssBuild')));
 
 task('watch', () => {
   watch('src/**/*.scss', series('scssBuild'))
@@ -25,4 +25,4 @@ task('watch', () => {
 });
 
 
-task('dev', series('clean', parallel('imgBuild', 'htmlBuild', 'scssBuild', 'watch', 'serve')));
+task('dev', series('clean', 'imgBuild', parallel('htmlBuild', 'scssBuild', 'watch', 'serve')));

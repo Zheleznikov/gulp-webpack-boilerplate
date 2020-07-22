@@ -2,13 +2,15 @@
 const $ = require('gulp-load-plugins')();
 const { src, dest } = require('gulp');
 const multipipe = require('multipipe');
+const cleanCss = require('gulp-clean-css');
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = (options) => () =>
   multipipe(
     src(options.src),
-     $.cached('scssBuild'),
+    // $.cached('scssBuild'),
     $.if(isDev, $.sourcemaps.init()),
     $.sass(),
     $.autoprefixer([
@@ -23,6 +25,7 @@ module.exports = (options) => () =>
     ], { cascade: true, flexbox: true }),
     $.remember('scssBuild'),
     $.if(isDev, $.sourcemaps.write()),
+    $.if(isProd, $.csso()),
     dest('build')
   )
   .on('error', $.notify.onError())
