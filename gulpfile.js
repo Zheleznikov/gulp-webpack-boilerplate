@@ -1,42 +1,22 @@
 'use strict'
+const { series, parallel, watch } = require('gulp');
 
-// const WEBPACK_CONFIG = require('./gulp/congif/webpackConfig');
-const isDev = require('./gulp/congif/webpackConfig');
-const { task, series, parallel } = require('gulp');
+const html = require('./gulp/tasks/transform/html');
+const {clean, fullClean} = require('./gulp/tasks/clean');
+const img = require('./gulp/tasks/transform/img');
+const js = require('./gulp/tasks/transform/js');
+const style = require('./gulp/tasks/transform/style');
+const liveServe = require('./gulp/tasks/liveServe');
 
-const webpackConfig = {
-  mode: isDev ? 'development' : 'production',
-  module: {
-    rules: [{
-      test: /\.js$/,
-      loader: "babel-loader",
-      exclude: /node_modules/
-    }]
-  }
-}
+const gulpWatch = () => {
+  watch('src/**/*.scss', series(style))
+    .on('unlink', (filepath) => {
+      $.remember.forget(style, path.resolve(filepath));
+    });
+  watch('src/images/**/*.*', series(img));
+  watch('src/**/*.html', series(html));
+  watch('src/**/*.js', series(js));
+};
 
-const lazyRequireTask = require('./gulp/utilites/lazyRequireTask');
-
-lazyRequireTask('scssBuild', '../tasks/scssBuild', { src: 'src/index.scss' });
-lazyRequireTask('htmlBuild', '../tasks/htmlBuild', { src: 'src/**.html' });
-lazyRequireTask('imgBuild', '../tasks/imgBuild', { src: 'src/images/**/*.*' });
-lazyRequireTask('jsBuild', '../tasks/jsBuild', { src: 'src/index.js', webpackConfig });
-lazyRequireTask('clean', '../tasks/clean', { src: 'build/!(images){,/**}' });
-lazyRequireTask('fullClean', '../tasks/clean', { src: 'build' });
-lazyRequireTask('serve', '../tasks/serve');
-const gulpWatch = require('./gulp/tasks/watch');
-
-
-task('dev',
-  series(
-    'clean',
-    'imgBuild',
-    parallel('htmlBuild', 'scssBuild', 'jsBuild', gulpWatch, 'serve'))
-);
-
-task('build',
-  series(
-    'fullClean',
-    'imgBuild',
-    parallel('jsBuild', 'htmlBuild', 'scssBuild'))
-);
+exports.dev = series(clean, img, parallel(html, style, js, gulpWatch, liveServe));
+exports.build = series(fullClean,img, parallel(js, html, style));

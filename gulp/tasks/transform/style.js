@@ -3,16 +3,23 @@ const $ = require('gulp-load-plugins')();
 const { src, dest } = require('gulp');
 const multipipe = require('multipipe');
 const cssBase64 = require('gulp-inline-base64');
+const modifyUrl = require('gulp-modify-css-urls');
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 
-module.exports = (options) => () =>
+module.exports = () =>
   multipipe(
-    src(options.src),
+    src('src/index.scss'),
     // $.cached('scssBuild'),
     $.if(isDev, $.sourcemaps.init()),
     $.sass(),
+    modifyUrl({
+      modify: (url) => {
+        const arrUrl = url.split('/');
+        return `./images/${arrUrl[arrUrl.length - 1]}`
+      },
+    }),
     $.autoprefixer([
       'Android 2.3',
       'Android >= 4',
@@ -23,7 +30,7 @@ module.exports = (options) => () =>
       'Opera >= 12',
       'Safari >= 6',
     ], { cascade: true, flexbox: true }),
-    $.remember('scssBuild'),
+    $.remember('style'),
     $.if(isProd, $.csso()),
     $.if(isProd, cssBase64({
       baseDir: 'build',

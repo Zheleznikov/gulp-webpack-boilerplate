@@ -1,3 +1,4 @@
 'use strict'
 const del = require('del');
-module.exports = (options) => () => del(options.src);
+module.exports.fullClean = () => del('build');
+module.exports.clean = () => del('build/!(images){,/**}');

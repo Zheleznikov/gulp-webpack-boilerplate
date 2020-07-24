@@ -3,7 +3,7 @@ const { src, dest } = require('gulp');
 const $ = require('gulp-load-plugins')();
 const imagemin = require('gulp-imagemin');
 
-module.exports = (options) => () =>  src(options.src)
+module.exports = () => src('src/images/**/*.*')
       .pipe($.newer('build/images'))
       .pipe(imagemin(
         [

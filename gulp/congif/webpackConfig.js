@@ -1,6 +1,8 @@
 exports.module = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
-exports.module =  {
+exports.module.webpackConfig =  {
+  mode: isDev ? 'development' : 'production',
   module: {
     rules: [{
       test: /\.js$/,
