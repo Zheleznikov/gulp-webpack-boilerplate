@@ -2,7 +2,7 @@
 const $ = require('gulp-load-plugins')();
 const { src, dest } = require('gulp');
 const multipipe = require('multipipe');
-const cleanCss = require('gulp-clean-css');
+const cssBase64 = require('gulp-inline-base64');
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
@@ -24,8 +24,13 @@ module.exports = (options) => () =>
       'Safari >= 6',
     ], { cascade: true, flexbox: true }),
     $.remember('scssBuild'),
-    $.if(isDev, $.sourcemaps.write()),
     $.if(isProd, $.csso()),
+    $.if(isProd, cssBase64({
+      baseDir: 'build',
+      maxSize: 14 * 1024 // calculation in bytes
+    })),
+    $.if(isDev, $.sourcemaps.write()),
+
     dest('build')
   )
   .on('error', $.notify.onError())

@@ -27,6 +27,7 @@
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
     "gulp-imagemin": "^7.1.0",
+    "gulp-inline-base64": "^0.1.5",
     "gulp-inline-image-html": "^0.2.3",
     "gulp-load-plugins": "^2.0.3",
     "gulp-newer": "^1.4.0",
@@ -43,8 +44,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development gulp dev --mode development",
-    "build": "cross-env NODE_ENV=production gulp build --mode production"
+    "dev": "cross-env NODE_ENV=development gulp dev",
+    "build": "cross-env NODE_ENV=production gulp build"
   },
   "repository": {
     "type": "git",
