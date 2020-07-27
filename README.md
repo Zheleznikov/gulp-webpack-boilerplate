@@ -12,4 +12,4 @@ https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/unveilhooks
 Пример css для background
   .footer.lazyloaded {
   background: url(branch.png);
-}
+  }
