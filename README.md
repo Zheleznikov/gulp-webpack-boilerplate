@@ -14,3 +14,4 @@ https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/unveilhooks
     .footer.lazyloaded {
      background: url(branch.png);
      }
+

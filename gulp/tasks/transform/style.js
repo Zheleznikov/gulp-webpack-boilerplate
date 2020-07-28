@@ -2,7 +2,7 @@
 const $ = require('gulp-load-plugins')();
 const { src, dest } = require('gulp');
 const multipipe = require('multipipe');
-const cssBase64 = require('gulp-inline-base64');
+const cssBase64 = require('gulp-css-base64');
 const modifyUrl = require('gulp-modify-css-urls');
 
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
@@ -20,6 +20,11 @@ module.exports = () =>
         return `./images/${arrUrl[arrUrl.length - 1]}`
       },
     }),
+    // $.if(isProd, cssBase64({
+    //    maxWeightResource: 1000000,
+    //   // baseDir: 'build',
+    //   // maxSize: 14 * 1024 // calculation in bytes
+    // })),
     $.autoprefixer([
       'Android 2.3',
       'Android >= 4',
@@ -32,10 +37,7 @@ module.exports = () =>
     ], { cascade: true, flexbox: true }),
     $.remember('style'),
     $.if(isProd, $.csso()),
-    $.if(isProd, cssBase64({
-      baseDir: 'build',
-      maxSize: 14 * 1024 // calculation in bytes
-    })),
+
     $.if(isDev, $.sourcemaps.write()),
 
     dest('build')

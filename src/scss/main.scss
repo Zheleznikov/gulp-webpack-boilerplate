@@ -4,10 +4,17 @@
 }
 
 .main {
-  background-image: url(../images/background.png);
+  // background-image: url(background.png);
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   flex: auto;
   // flex-shrink: 1;
+}
+
+.main.lazyloaded {
+  background-image: url(../images/background.png);
+}
+.main__lead {
+  max-width: 100%;
 }
