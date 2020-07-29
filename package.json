@@ -30,6 +30,7 @@
     "gulp-file-include": "^2.2.2",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
+    "gulp-image-lqip": "^1.0.3",
     "gulp-imagemin": "^7.1.0",
     "gulp-inline-base64": "^0.1.5",
     "gulp-inline-image-html": "^0.2.3",

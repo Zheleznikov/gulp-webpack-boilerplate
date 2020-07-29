@@ -6,7 +6,7 @@ const lqip = require('lqip');
 
 const file = './images/lead.png';
 
-lqip.base64(file).then(res => {
+lqip.base64(file).then(res => {еуы
   console.log(res); 
 });
 
